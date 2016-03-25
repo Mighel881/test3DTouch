@@ -10,9 +10,51 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    
+    @IBOutlet weak var forcePercentage: UILabel!
+    
+    var forceAm: CGFloat = 0.0
+    var deviceIsCompatible = true
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        forcePercentage.text = "\(forceAm)"
+        switch self.traitCollection.forceTouchCapability {
+        case .Available: deviceIsCompatible = true
+            forcePercentage.text = "0%"
+        default:
+            deviceIsCompatible = false
+            forcePercentage.text = "Device not supported!"
+        }
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if deviceIsCompatible { touchAction(touches.first!) }
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if deviceIsCompatible { touchAction(touches.first!) }
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if deviceIsCompatible {
+            
+            self.view.backgroundColor = UIColor(white: 1, alpha: 1)
+            forcePercentage.textColor = UIColor.blackColor()
+            forcePercentage.text = "0%"
+            
+        }
+    }
+    
+    func touchAction(touch:UITouch) {
+        
+        forceAm = touch.force/touch.maximumPossibleForce
+        let percent = forceAm*100
+        let relativePercent = String(format: "%.0f%%", percent)
+        
+        forcePercentage.text = relativePercent
     }
 
     override func didReceiveMemoryWarning() {
