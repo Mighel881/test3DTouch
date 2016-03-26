@@ -40,11 +40,8 @@ class ViewController: UIViewController {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if deviceIsCompatible {
-            
-            self.view.backgroundColor = UIColor(white: 1, alpha: 1)
             forcePercentage.textColor = UIColor.blackColor()
             forcePercentage.text = "0%"
-            
         }
     }
     
@@ -55,6 +52,12 @@ class ViewController: UIViewController {
         let relativePercent = String(format: "%.0f%%", percent)
         
         forcePercentage.text = relativePercent
+        if percent >= 70 {
+            forcePercentage.textColor = UIColor.redColor()
+        }
+        else {
+            forcePercentage.textColor = UIColor.blackColor()
+        }
     }
 
     override func didReceiveMemoryWarning() {
